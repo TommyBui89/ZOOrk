@@ -64,7 +64,7 @@ int main() {
     Passage::createBasicPassage(cave_entrance.get(), cave.get(), "enter", true);
     Passage::createBasicPassage(cave.get(), underground_river.get(), "down", true);
     Passage::createBasicPassage(underground_river.get(), treasure_room.get(), "west", true);
-    Passage::createBasicPassage(treasure_room.get(), secret_room.get(), "unlock", true);
+    Passage::createBasicPassage(treasure_room.get(), secret_room.get(), "west", true);
     Passage::createBasicPassage(secret_room.get(), start.get(), "south", true);
     Passage::createBasicPassage(start.get(), cliff.get(), "west", true);
     Passage::createBasicPassage(cliff.get(), beach.get(), "down", true);

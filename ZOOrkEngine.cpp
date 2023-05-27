@@ -65,8 +65,15 @@ void ZOOrkEngine::handleGoCommand(std::vector<std::string> arguments) {
 
     Room* currentRoom = player->getCurrentRoom();
     auto passage = currentRoom->getPassage(direction);
-    player->setCurrentRoom(passage->getTo());
-    passage->enter();
+//    player->setCurrentRoom(passage->getTo());
+//    passage->enter();
+
+    if (passage != nullptr && passage->getTo() != nullptr) {
+        player->setCurrentRoom(passage->getTo());
+        passage->enter();
+    } else {
+        std::cout << "You can't go that way.\n";
+    }
 }
 
 void ZOOrkEngine::handleLookCommand(std::vector<std::string> arguments) {
