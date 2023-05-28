@@ -9,6 +9,9 @@
 #include "Player.h"
 
 int main() {
+    std::shared_ptr<Room> welcomeRoom = std::make_shared<Room>("Welcome Room",
+                                                               "Welcome to the game! You find yourself in a mysterious world full of adventures.\n");
+
     std::shared_ptr<Room> start = std::make_shared<Room>("start-room",
                                                          "You are standing in an open field west of a white house, with a boarded front door.\n");
 
@@ -36,6 +39,9 @@ int main() {
     std::shared_ptr<Room> secret_room = std::make_shared<Room>("secret-room",
                                                                "This is the secret room. It's hidden from plain sight.");
 
+    std::shared_ptr<Room> champion = std::make_shared<Room>("Win Game",
+                                                            "Congratulations! You have reached the end of the game. You are the champion!\n");
+
     std::shared_ptr<Room> cliff = std::make_shared<Room>("cliff",
                                                          "You are standing at the edge of a cliff. The view is breathtaking, with the vast expanse of the ocean stretching out before you. The sound of crashing waves fills the air.\n");
 
@@ -60,19 +66,20 @@ int main() {
     Passage::createBasicPassage(forest.get(), cave_entrance.get(), "north", true);
     Passage::createBasicPassage(cave_entrance.get(), cave.get(), "enter", true);
     Passage::createBasicPassage(cave.get(), underground_river.get(), "down", true);
-    Passage::createBasicPassage(underground_river.get(), treasure_room.get(), "west", true);
+    Passage::createBasicPassage(underground_river.get(), treasure_room.get(), "west", false);
 
-    Passage::createBasicPassage(treasure_room.get(), underground_river.get(), "east", true);
-
+//    Passage::createBasicPassage(treasure_room.get(), underground_river.get(), "east", false);
+    Passage::createBasicPassage(secret_room.get(), underground_river.get(), "east", false);
 
     // Create a door passage that requires a key to unlock
     std::shared_ptr<Door> secret_door = std::make_shared<Door>("secret-door", "A hidden door", treasure_room.get(), secret_room.get(), key);
     treasure_room->addPassage("west", secret_door);
 
-    Passage::createBasicPassage(secret_room.get(), start.get(), "south", true);
-    Passage::createBasicPassage(secret_room.get(), underground_river.get(), "east", true);
+    Passage::createBasicPassage(secret_room.get(), champion.get(), "south", false);
     Passage::createBasicPassage(start.get(), cliff.get(), "west", true);
     Passage::createBasicPassage(cliff.get(), beach.get(), "down", true);
+    Passage::createBasicPassage(welcomeRoom.get(), start.get(), "south", true);
+
 
     Player* player = Player::instance(); // Create the player instance
     player->setCurrentRoom(start.get()); // Set the player's initial room
