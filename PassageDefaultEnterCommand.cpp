@@ -30,7 +30,7 @@ void PassageDefaultEnterCommand::execute() {
             return;
         }
         passage->unlock();
-        std::cout << "You unlocked the passage.\n";
+//        std::cout << "You unlocked the passage.\n";
     }
     player->setCurrentRoom(passage->getTo());
     std::cout << "You entered the " << passage->getTo()->getName() << ".\n";

@@ -3,25 +3,21 @@
 //
 
 #include "Key.h"
+#include "Door.h"
 
 Key::Key(const std::string& n, const std::string& d) : Item(n, d) {}
 
 void Key::use(Room* room) {
-    if (room->isSecretRoom()) {
-        std::shared_ptr<Passage> secretPassage = room->getPassage("unlock");
-        if (secretPassage) {
-            if (secretPassage->isLocked()) {
-                secretPassage->unlock();
-                std::cout << "You use the key to unlock the secret room passage!" << std::endl;
-            } else {
-                std::cout << "The secret room passage is already unlocked." << std::endl;
-            }
+    // Check if the room has a secret door passage
+    std::shared_ptr<Door> secretDoor = std::dynamic_pointer_cast<Door>(room->getPassage("west"));
+    if (secretDoor) {
+        if (secretDoor->isLocked()) {
+            secretDoor->unlock();
+            std::cout << "You use the key to unlock the secret door!" << std::endl;
         } else {
-            std::cout << "There is no secret room passage in this room." << std::endl;
+            std::cout << "The secret door is already unlocked." << std::endl;
         }
     } else {
-        std::cout << "The key doesn't seem to work here." << std::endl;
+        std::cout << "There is no secret door in this room." << std::endl;
     }
 }
-
-

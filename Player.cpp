@@ -67,3 +67,8 @@ void Player::go(const std::string& direction, const std::string& requiredItem) {
     }
 }
 
+void Passage::setRequiredItem(std::shared_ptr<Item> item) {
+    requiredItem = std::move(item);
+}
+
+

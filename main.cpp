@@ -46,7 +46,7 @@ int main() {
                                                                    "You have discovered an underwater cave. Sunlight filters through the clear water, revealing a colorful array of coral and fish swimming around.\n");
 
     std::shared_ptr<Item> key = std::make_shared<Key>("key", "A small key that can unlock secrets.");
-//    start->addItem(key);
+    start->addItem(key);
 
     std::shared_ptr<Item> sword = std::make_shared<Item>("sword", "A sharp and sturdy sword.");
     std::shared_ptr<Item> treasure = std::make_shared<Item>("treasure", "A chest filled with valuable treasures.");
@@ -62,11 +62,15 @@ int main() {
     Passage::createBasicPassage(cave.get(), underground_river.get(), "down", true);
     Passage::createBasicPassage(underground_river.get(), treasure_room.get(), "west", true);
 
+    Passage::createBasicPassage(treasure_room.get(), underground_river.get(), "east", true);
+
+
     // Create a door passage that requires a key to unlock
     std::shared_ptr<Door> secret_door = std::make_shared<Door>("secret-door", "A hidden door", treasure_room.get(), secret_room.get(), key);
     treasure_room->addPassage("west", secret_door);
 
     Passage::createBasicPassage(secret_room.get(), start.get(), "south", true);
+    Passage::createBasicPassage(secret_room.get(), underground_river.get(), "east", true);
     Passage::createBasicPassage(start.get(), cliff.get(), "west", true);
     Passage::createBasicPassage(cliff.get(), beach.get(), "down", true);
 
