@@ -2,20 +2,27 @@
 // Created by Richard Skarbez on 5/7/23.
 //
 
-#ifndef ZOORK_PASSAGEDEFAULTENTERCOMMAND_H
-#define ZOORK_PASSAGEDEFAULTENTERCOMMAND_H
-
+#ifndef PASSAGEDEFAULTENTERCOMMAND_H
+#define PASSAGEDEFAULTENTERCOMMAND_H
 
 #include "Command.h"
+#include "Location.h"
+#include "Player.h"
+#include <memory>
 
-#include <utility>
+class Passage; // Forward declaration
 
 class PassageDefaultEnterCommand : public Command {
 public:
-    explicit PassageDefaultEnterCommand(GameObject* g) : Command(g) {}
+    PassageDefaultEnterCommand(Passage* p) : Command(nullptr), passage(p) {}
 
     void execute() override;
+
+private:
+    Location* location;
+    Player* player;
+//    std::shared_ptr<Passage> passage;
+    Passage* passage;
 };
 
-
-#endif //ZOORK_PASSAGEDEFAULTENTERCOMMAND_H
+#endif // PASSAGEDEFAULTENTERCOMMAND_H

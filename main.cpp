@@ -5,8 +5,8 @@
 #include "ZOOrkEngine.h"
 
 #include "Key.h"
-#include "FriendlyNPCInteractCommand.h"
-#include "HostileNPCInteractCommand.h"
+#include "Door.h"
+#include "Player.h"
 
 int main() {
     std::shared_ptr<Room> start = std::make_shared<Room>("start-room",
@@ -45,15 +45,12 @@ int main() {
     std::shared_ptr<Room> underwater_cave = std::make_shared<Room>("underwater-cave",
                                                                    "You have discovered an underwater cave. Sunlight filters through the clear water, revealing a colorful array of coral and fish swimming around.\n");
 
-//    std::shared_ptr<Item> key = std::make_shared<Item>("key", "A shiny golden key.");
-
     std::shared_ptr<Item> key = std::make_shared<Key>("key", "A small key that can unlock secrets.");
-    start->addItem(key);
+//    start->addItem(key);
 
     std::shared_ptr<Item> sword = std::make_shared<Item>("sword", "A sharp and sturdy sword.");
     std::shared_ptr<Item> treasure = std::make_shared<Item>("treasure", "A chest filled with valuable treasures.");
 
-//    start->addItem(key); // Add the key to the starting room.
     cave->addItem(sword); // Add the sword to the cave.
     secret_room->addItem(treasure); // Add the treasure chest to the secret room.
 
@@ -64,14 +61,25 @@ int main() {
     Passage::createBasicPassage(cave_entrance.get(), cave.get(), "enter", true);
     Passage::createBasicPassage(cave.get(), underground_river.get(), "down", true);
     Passage::createBasicPassage(underground_river.get(), treasure_room.get(), "west", true);
-    Passage::createBasicPassage(treasure_room.get(), secret_room.get(), "west", true);
+
+    // Create a door passage that requires a key to unlock
+    std::shared_ptr<Door> secret_door = std::make_shared<Door>("secret-door", "A hidden door", treasure_room.get(), secret_room.get(), key);
+    treasure_room->addPassage("west", secret_door);
+
     Passage::createBasicPassage(secret_room.get(), start.get(), "south", true);
     Passage::createBasicPassage(start.get(), cliff.get(), "west", true);
     Passage::createBasicPassage(cliff.get(), beach.get(), "down", true);
 
-    ZOOrkEngine zoork(start);
+    Player* player = Player::instance(); // Create the player instance
+    player->setCurrentRoom(start.get()); // Set the player's initial room
+
+    player->go("north", "key"); // Move the player to the north with the required item "key"
+
+
+    ZOOrkEngine zoork(start); // Create the ZOOrk engine with the start room
 
     zoork.run();
 
     return 0;
 }
+

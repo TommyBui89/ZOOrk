@@ -29,16 +29,18 @@ public:
 
     std::shared_ptr<Item> getItem(const std::string& itemName);
 
+    bool hasItem(const std::string& itemName);
+
     std::vector<std::shared_ptr<Item>> getInventory() const;
 
     Player(const Player &) = delete;
 
     Player &operator=(const Player &) = delete;
 
-    void go(const std::string& direction);
+    void go(const std::string& direction, const std::string& requiredItem);
 
 private:
-    static Player *playerInstance;
+    static Player* playerInstance;
     Room* currentRoom;
     std::vector<std::shared_ptr<Item>> inventory;
 
